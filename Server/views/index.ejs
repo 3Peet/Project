@@ -192,34 +192,9 @@
                 return day_name[my_day.getDay()];
             }
 
-            var ctx = document.getElementById('chart').getContext('2d')
-            var data = {
-            labels: [0],
-            datasets: [{
-                data: [0],
-                label: 'Temperature',
-                backgroundColor: '#fff'
-            }]
-            }
-            var optionsAnimations = { animation: false }
-            var chart = new Chart(ctx, {
-            type: 'line',
-            data: data,
-            options: optionsAnimations
-            })
 
-            socket.on('temperature', function (value) {
-            var length = data.labels.length
-            if (length >= 20) {
-                data.datasets[0].data.shift()
-                data.labels.shift()
-            }
 
-            data.labels.push(moment().format('HH:mm:ss'))
-            data.datasets[0].data.push(value)
 
-            chart.update()
-            })
 
             
     </script>

@@ -1,11 +1,11 @@
 var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-const EventEmitter = require('events')
+
 
 var express = require('express');
 const bodyParser = require('body-parser');
-const events = new EventEmitter()
+
 
 //For write json file
 const editJsonFile = require("edit-json-file");
@@ -58,21 +58,6 @@ app.post('/',(req,res)=>{
     }
 
 
-    io.on('connect', socket => {
-        events.on('temperature', value => {
-          socket.emit('temperature', value)
-        })
-      })
-      
-      // This function will be changed for the J5 sensor event
-      // sensor.on('change', function () {
-      //   events.emit('temperature', this.celsius)
-      // })
-      //
-      setInterval(() => {
-        const temperature = Math.round(Math.random() * 10)
-        events.emit('temperature', temperature)
-      }, 5000)
 
     console.log('Got body:', req.body);
     res.sendStatus(200);

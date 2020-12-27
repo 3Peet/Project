@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Graph</title>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+</head>
+<body>
+    <div id="chart"></div>
+</body>
+</html>
+
+
+<script type="text/javascript">
+var options = {
+    chart: {
+        height: 350,
+        type: 'line',
+        animations: {
+            easing: 'linear',
+            dynamicAnimation: {
+                speed: 2000
+            }
+        },
+        toolbar: {
+            show: false
+        },
+        zoom: {
+            enabled: false
+        }
+    },
+    dataLabels: {
+        enabled: false
+    },
+    stroke: {
+        curve: 'smooth'
+    },
+    series: [{
+            name: "Tempurature",
+            data: [45, 52, 38, 24, 33, 26, 21, 20, 6, 8, 15, 10, 51, 32, 12]
+            
+        },
+        {
+            name: "pH",
+            data: [35, 41, 62, 42, 13, 18, 29, 37, 36, 51, 32, 35, 20, 51, 36]
+            
+        }
+    ],
+    title: {
+        text: 'Dynamic Updating Chart',
+        align: 'left'
+    },
+    markers: {
+        size: 0
+    },
+    xaxis: {
+        range: 10,
+        tickAmount: 10
+    },
+    legend: {
+        show: true
+    },
+}
+
+var datasw = 50;
+var plus = 0;
+
+var chart = new ApexCharts(
+    document.querySelector("#chart"),
+    options
+);
+
+chart.render();
+
+
+window.setInterval(function () {
+    chart.appendData([{
+        data: [Math.floor((Math.random() * 20) + 20)]
+    }, {
+        data: [Math.floor((Math.random() * 20) + 20)]
+    }])
+}, 2000)
+</script>

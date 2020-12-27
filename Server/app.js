@@ -29,6 +29,10 @@ app.get('/',(req,res)=>{
 
 })
 
+app.get('/chart',(req,res)=>{
+    res.render("chart");
+})
+
 io.on('connect',function(socket){
     socket.on('sw-state',function(data){
         sw_light_file.set("value", data);
@@ -45,17 +49,31 @@ app.get('/sw-light',(req,res)=>{
 
 
 app.post('/',(req,res)=>{
+
+    if(req.body.id=="postman"){
+        io.sockets.emit('tempdata',{value: req.body.temp + '  °C'});
+        io.sockets.emit('humdata',{value: req.body.hum + ' %'});
+        io.sockets.emit('lightdata',{value: req.body.light + ' lux'});
+        io.sockets.emit('ecdata',{value: req.body.ec + ' uS/cm'});
+        io.sockets.emit('phdata',{value: req.body.ph});
+    }
     
     if(req.body.id=="dht"){
         io.sockets.emit('tempdata',{value: req.body.temp + '  °C'});
-        io.sockets.emit('temp_graph',{value: req.body.temp});
         io.sockets.emit('humdata',{value: req.body.hum + ' %'});
     }
 
     if(req.body.id=="ldr"){
         io.sockets.emit('lightdata',{value: req.body.light + ' lux'});
+        
+    }
+
+    if(req.body.id=="dfrobot"){
+        io.sockets.emit('ecdata',{value: req.body.ec + ' μS/cm'});
         io.sockets.emit('phdata',{value: req.body.ph});
     }
+
+    
 
 
 

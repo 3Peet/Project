@@ -8,6 +8,7 @@ body {
   background-color: #f5f7fd;
 }
 
+
 .grid {
   display: grid;
   grid-template-columns: 150px auto;
@@ -20,7 +21,11 @@ body {
 
 .page-header {
   grid-area: header;
-  border-bottom: 0.5px solid rgb(104, 104, 104)
+  margin: 0;
+  -webkit-box-shadow: 0 8px 6px -6px var(--txt-main);
+  -moz-box-shadow: 0 8px 6px -6px var(--txt-main);
+       box-shadow: 0 8px 6px -6px var(--txt_light);
+
 }
 
 /* Menu-Bar */
@@ -28,7 +33,7 @@ body {
   border-radius: 20px;
   /* background-color: white; */
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   box-sizing: border-box;
 }
 
@@ -44,7 +49,7 @@ body {
 }
 
 .item.title {
-  font-weight: 600;
+  font-weight: bolder;
 }
 
 .item:hover {
@@ -53,26 +58,27 @@ body {
 }
 /* ----------------------- */
 
-.page-leftbar {
+/* .page-leftbar {
   text-align: center;
   grid-area: leftbar;
   background: #fff;
   border-radius: 20px;
   margin-right: 10px;
 
-}
+} */
 
 .page-main  {
   grid-area: main;
+  margin-right: 40px;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-template-rows: minmax(auto,.4fr) 1fr 1fr 1fr;
   gap: 10px;
   grid-template-areas: 
-  'title title title title'
-  'card1 card2 card3 card4'
-  'card5 card6 card6 card7'
-  'card5 card6 card6 card7';
+  'title      title     title       title'
+  'card_temp  card_hum  card_light  card_ec'
+  'card_ph    card6     card6       card7'
+  'card5      card6     card6       card7';
 }
 
 .page-footer {
@@ -82,21 +88,36 @@ body {
   margin-top: 10px;
 }
 
+#chart {
+  padding: 10px;
+}
+
 #ct {
   color: var(--txt_light) !important;
 }
 
-.card5 {
-  grid-area: card5;
+.env-card.temp {
+  grid-area: card_temp;
 }
 
-.card7 {
-  grid-area: card7;
+.env-card.hum {
+  grid-area: card_hum;
+}
+
+.env-card.light {
+  grid-area: card_light;
+}
+
+.env-card.ec {
+  grid-area: card_ec;
+}
+
+.env-card.ph {
+  grid-area: card_ph;
 }
 
 .card6 {
   grid-area: card6;
-
 }
 
 .env-title {
@@ -138,7 +159,6 @@ body {
 .sw {
   align-content: center;
 }
-
 
 
 /* .content {

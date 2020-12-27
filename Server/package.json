@@ -9,7 +9,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "apexcharts": "^3.23.0",
     "body-parser": "^1.19.0",
     "bulma-extensions": "^6.2.7",
     "edit-json-file": "^1.5.0",

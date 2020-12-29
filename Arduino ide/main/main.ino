@@ -10,8 +10,8 @@
 //WiFi Setup
 const char* ssid = "RP4";
 const char* password = "0852902000s";
-const char* serverName = "http://192.168.1.111:3000/";
-const char* serverName_light = "http://192.168.1.111:3000/sw-light";
+const char* serverName = "http://192.168.1.112:3000/";
+const char* serverName_light = "http://192.168.1.112:3000/sw-light";
 
 // Define Pin
 #define DHTPIN 15
@@ -118,7 +118,9 @@ void loop() {
     if(millis()- time_3 > INTERVAL_Relay_light) {
       time_3 = millis();
       sensorReadings = httpGETRequest(serverName_light);
-      status_light = sensorReadings.substring(182,186);
+      Serial.println(sensorReadings);
+      status_light = sensorReadings.substring(179,183);
+      Serial.println(status_light);
       if(status_light=="true") {
         Serial.println("LIGHT ON");
         digitalWrite(relay_light,LOW);

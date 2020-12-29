@@ -1,5 +1,5 @@
 {
   "id": "sw_light",
-  "value": false,
+  "value": true,
   "device": "ESP32"
 }

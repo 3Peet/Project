@@ -20,6 +20,7 @@ body {
 }
 
 .page-header {
+  width: 100%;
   grid-area: header;
   margin: 0;
   -webkit-box-shadow: 0 8px 6px -6px var(--txt-main);
@@ -30,7 +31,7 @@ body {
 
 /* Menu-Bar */
 .menu-bar {
-  border-radius: 20px;
+  /* border-radius: 20px; */
   /* background-color: white; */
   display: flex;
   justify-content: space-between;
@@ -72,13 +73,15 @@ body {
   margin-right: 40px;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-template-rows: minmax(auto,.4fr) 1fr 1fr 1fr;
+  grid-template-rows: minmax(auto,.4fr) 1fr 1fr 1fr 1fr;
   gap: 10px;
   grid-template-areas: 
   'title      title     title       title'
   'card_temp  card_hum  card_light  card_ec'
   'card_ph    card6     card6       card7'
-  'card5      card6     card6       card7';
+  'card5      card6     card6       card7'
+  'card5      card      card        card'
+  ;
 }
 
 .page-footer {
@@ -94,6 +97,7 @@ body {
 
 #ct {
   color: var(--txt_light) !important;
+  font-size: 1.2rem;
 }
 
 .env-card.temp {
@@ -118,6 +122,10 @@ body {
 
 .card6 {
   grid-area: card6;
+}
+
+.card5 {
+  grid-area: card5;
 }
 
 .env-title {

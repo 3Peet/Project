@@ -15,71 +15,85 @@
 
 <script type="text/javascript">
 var options = {
-    chart: {
-        height: 350,
-        type: 'line',
-        animations: {
-            easing: 'linear',
-            dynamicAnimation: {
-                speed: 2000
+          series: [20],
+          chart: {
+          height: 350,
+          type: 'radialBar',
+          toolbar: {
+            show: true
+          }
+        },
+        plotOptions: {
+          radialBar: {
+            startAngle: -135,
+            endAngle: 225,
+             hollow: {
+              margin: 0,
+              size: '70%',
+              background: '#fff',
+              image: undefined,
+              imageOffsetX: 0,
+              imageOffsetY: 0,
+              position: 'front',
+              dropShadow: {
+                enabled: true,
+                top: 3,
+                left: 0,
+                blur: 4,
+                opacity: 0.24
+              }
+            },
+            track: {
+              background: '#fff',
+              strokeWidth: '67%',
+              margin: 0, // margin is in pixels
+              dropShadow: {
+                enabled: true,
+                top: -3,
+                left: 0,
+                blur: 4,
+                opacity: 0.35
+              }
+            },
+        
+            dataLabels: {
+              show: true,
+              name: {
+                offsetY: -10,
+                show: true,
+                color: '#888',
+                fontSize: '17px'
+              },
+              value: {
+                formatter: function(val) {
+                  return parseInt(val);
+                },
+                color: '#111',
+                fontSize: '36px',
+                show: true,
+              }
             }
+          }
         },
-        toolbar: {
-            show: false
+        fill: {
+          type: 'gradient',
+          gradient: {
+            shade: 'dark',
+            type: 'horizontal',
+            shadeIntensity: 0.5,
+            gradientToColors: ['#ABE5A1'],
+            inverseColors: true,
+            opacityFrom: 1,
+            opacityTo: 1,
+            stops: [0, 100]
+          }
         },
-        zoom: {
-            enabled: false
-        }
-    },
-    dataLabels: {
-        enabled: false
-    },
-    stroke: {
-        curve: 'smooth'
-    },
-    series: [{
-            name: "Tempurature",
-            data: [45, 52, 38, 24, 33, 26, 21, 20, 6, 8, 15, 10, 51, 32, 12]
-            
+        stroke: {
+          lineCap: 'round'
         },
-        {
-            name: "pH",
-            data: [35, 41, 62, 42, 13, 18, 29, 37, 36, 51, 32, 35, 20, 51, 36]
-            
-        }
-    ],
-    title: {
-        text: 'Dynamic Updating Chart',
-        align: 'left'
-    },
-    markers: {
-        size: 0
-    },
-    xaxis: {
-        range: 10,
-        tickAmount: 10
-    },
-    legend: {
-        show: true
-    },
-}
+        labels: ['Percent'],
+        };
 
-var datasw = 50;
-var plus = 0;
-
-var chart = new ApexCharts(
-    document.querySelector("#chart"),
-    options
-);
-
-chart.render();
-
-
-window.setInterval(function () {
-    chart.appendData([{
-        data: [Math.floor((Math.random() * 20) + 20)]
-    }, {
-        data: [Math.floor((Math.random() * 20) + 20)]
-    }])
-}, 2000)
+        var chart = new ApexCharts(document.querySelector("#chart"), options);
+        chart.render();
 </script>

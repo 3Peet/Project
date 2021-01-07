@@ -10,6 +10,7 @@ const bodyParser = require('body-parser');
 //For write json file
 const editJsonFile = require("edit-json-file");
 const { getUnpackedSettings } = require('http2');
+const e = require('express');
 let sw_light_file = editJsonFile(`${__dirname}/src/json/sw-light.json`);
     //sw_light_file.unset(`${__dirname}/src/json/sw-light.json`);
 
@@ -32,6 +33,30 @@ app.get('/',(req,res)=>{
 app.get('/chart',(req,res)=>{
     res.render("chart");
 })
+
+app.get('/control',(req,res)=>{
+    res.render("control");
+})
+
+app.get('/market',(req,res)=>{
+    res.render("market");
+})
+
+app.post("/start_date_data",(req,res)=>{
+    if(req.body.start_date==""){
+        console.log("No Data")
+        res.render("index");
+    }
+    else {
+        var data="";
+        data += "Start Date :"+req.body.start_date;
+        console.log(data);
+        res.render("index");
+    }
+    
+})
+
+
 
 io.on('connect',function(socket){
     socket.on('sw-state',function(data){

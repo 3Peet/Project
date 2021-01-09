@@ -107,14 +107,31 @@
         </div>
 
         <div class="env-card process-data">
-          <a
-            id="button-start"
-            onclick="jsfunction()"
-            href="javascript:div_show()"
-            class="button-start"
-            style="background-color: #4e9af1"
-            >Let's Plant !</a
-          >
+          <div id="start-date-data">
+            <div class="count-time">
+              <h2 id="m4" style="font-size: 3em;">120</h2>
+              <h3>Days</h3>
+              <p>Untill to Harvest</p>
+            </div>
+          </div>
+
+          <div id="btn-start">
+            <a
+              id="button-start"
+              class="button-start"
+              style="background-color: #4e9af1"
+              >Let's Plant !</a
+            >
+          </div>
+
+          <div id="btn-cancel">
+            <a
+              id="button-cancel"
+              class="button-cancel"
+              style="background-color: #4e9af1"
+            >Cancel</a
+            >
+          </div>
 
           <div id="btn-harvest">
             <a
@@ -131,6 +148,9 @@
             style="display: none"
           ></iframe>
 
+          <!-- POPUP FORM -->
+
+          <p id="me2">Kick me pls ?</p>
           <div id="popup-card">
             <div id="popup-data">
               <form
@@ -203,13 +223,12 @@
                 </div>
 
                 <div class="date-start">
-                  <label for="dateofbirth">Start date : </label>
-                  <input type="date" name="start_date" class="plant-input" />
-                  <!-- <button type="submit">Submit</button> -->
+                  <label for="dateofstarted">Start date : </label>
+                  <input type="date" name="start_date" class="plant-input" id="plant-input-form"/>
                   <div class="button-popup">
                     <input
                       class="submit"
-                      id="summit-and-close"
+                      id="submit-and-close"
                       type="submit"
                       value="Submit"
                     />
@@ -220,12 +239,8 @@
             </div>
           </div>
         </div>
-
-        
       </div>
     </div>
-
-    <!-- <sc type="text/javascript" src="../public/js/script.js"></sc> -->
 
     <script src="/socket.io/socket.io.js"></script>
 
@@ -426,40 +441,87 @@
 
       process_chart.render();
 
-      // POP-UP
 
-      //Function To Display Popup
-      function div_show() {
-        document.getElementById("popup-card").style.display = "block";
-      }
-      //Function to Hide Popup
-      function div_hide() {
-        document.getElementById("popup-card").style.display = "none";
-      }
+      // POP-UP
+      var date = new Date(document.getElementById("plant-input-form").value);
+      var timestamp = date.getTime();
+      socket.on("schedule",(data1,data2,data3)=>{
+        var plant_status = data1.status;
+        var plant_start_date = data2.start_date;
+        var plant_day_remaining = data3.days_remaining;
+
+        document.getElementById("me2").innerHTML = "Status : " + plant_status;
+        document.getElementById("m4").innerHTML = String(plant_day_remaining);
+
+        var start_btn = document.getElementById("btn-start");
+        var cancel_btn = document.getElementById("btn-cancel");
+        var start_date_data = document.getElementById("start-date-data");
+        
+
+
+        if(plant_status == 'ready'){
+          start_btn.style.display = "block";
+          cancel_btn.style.display = "none";
+          start_date_data.style.display = "none";
+
+          document.getElementById("button-start").addEventListener('click',() =>{
+          var popup_main = document.getElementById("popup-card");
+          popup_main.style.display = "block";
+        });
+    
+      } else if (plant_status == 'planting'){
+        start_btn.style.display = "none";
+        cancel_btn.style.display = "block";
+        start_date_data.style.display ="block";
+      };
 
       document.getElementById("close-popup").addEventListener("click", () => {
-        var box1 = document.getElementById("popup-card");
-        if (box1.style.display == "none") {
-          box1.style.display = "block";
-        } else {
-          box1.style.display = "none";
-        }
+        var popup_main = document.getElementById("popup-card");
+        popup_main.style.display = "none";
       });
 
-      document
-        .getElementById("summit-and-close")
-        .addEventListener("click", () => {
-          var box1 = document.getElementById("popup-card");
-          var status_start_btn = document.getElementById("button-start");
-          var status_harvest_btn = document.getElementById("btn-harvest");
-          if (box1.style.display == "none") {
-            box1.style.display = "block";
-          } else {
-            box1.style.display = "none";
-            status_start_btn.style.display = "none";
-            status_harvest_btn.style.display = "flex";
-          }
-        });
+      document.getElementById("submit-and-close").addEventListener("click",() =>{
+        var popup_main = document.getElementById("popup-card");
+        var start_btn = document.getElementById("btn-start");
+        var cancel_btn = document.getElementById("btn-cancel");
+        var start_date_data = document.getElementById("start-date-data");
+        var plant_form_data = document.forms["plant_form"]["start_date"].value;
+
+        // Check null form
+        if(plant_form_data == "") {
+          alert("Start date must be filled out !");
+          return false;
+        }
+        
+
+        popup_main.style.display = "none";
+        start_btn.style.display = "none";
+        cancel_btn.style.display = "block";
+        start_date_data.style.display = "block";
+        // document.getElementById("start-date-data").innerHTML= plant_start_date;
+
+        
+        socket.emit("schedule_status", "planting");
+        socket.emit("schedule", "planting");
+        
+      });
+
+      document.getElementById("button-cancel").addEventListener("click",()=> {
+        var start_btn = document.getElementById("btn-start");
+        var cancel_btn = document.getElementById("btn-cancel");
+
+        start_btn.style.display = "block"
+        cancel_btn.style.display = "none"
+
+        socket.emit("schedule_status", "ready");
+        socket.emit("schedule", "ready");
+      });
+
+
+    
+
+      });
+
     </script>
   </body>
 </html>

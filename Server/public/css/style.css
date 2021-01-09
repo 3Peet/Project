@@ -77,7 +77,7 @@ a.item.title {
   margin-right: 10% !important;
   display: grid;
   grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
-  grid-template-rows: minmax(auto, 0.4fr) 1fr 1fr 0.4fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: minmax(auto, 0.4fr) 1fr 1fr 0.4fr 1fr 1fr;
   gap: 10px;
   grid-template-areas:
     "title      title     title       title       title"
@@ -86,8 +86,6 @@ a.item.title {
     "topic1     topic1    topic1      topic1      topic1"
     "process     process  process_txt  process_txt  process_txt"
     "process     process  process_txt  process_txt  process_txt"
-    "card      card     test       test       test"
-    "card      card     test       test       test";
 
     
   /* 'title      title     title       title'
@@ -203,7 +201,7 @@ a.item.title {
 
 
 
-a.button-start, a.button-harvest{
+a.button-start, a.button-harvest, a.button-cancel{
   display: inline-block;
   padding: 0.3em 1.2em;
   margin: 0 0.1em 0.1em 0;
@@ -220,14 +218,21 @@ a.button-start, a.button-harvest{
 }
 a.button-start:hover {
   border-color: lightskyblue;
+  cursor: pointer;
+}
+
+a.button-cancel:hover {
+  border-color: lightskyblue;
+  cursor: pointer;
 }
 
 a.button-harvest:hover {
   border-color: lightskyblue;
+  cursor: pointer;
 }
 
 
-#btn-harvest {
+#btn-harvest, #btn-cancel, #start-date-data{
   display: none;
 }
 

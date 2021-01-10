@@ -86,19 +86,66 @@ a.item.title {
     "topic1     topic1    topic1      topic1      topic1"
     "process     process  process_txt  process_txt  process_txt"
     "process     process  process_txt  process_txt  process_txt"
+}
 
-    
-  /* 'title      title     title       title'
-  'card_temp  card_hum  card_light  card_ec'
-  'card_ph    graph     graph       card7'
-  'card5      graph     graph       card7'
-  'card5      card      card        card'
-  ; */
+.control-main {
+  grid-area: main;
+  margin-right: 10% !important;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-row: 1fr 1fr 1fr 1fr;
+  gap: 10px;
+  grid-template-areas:
+  "ctrl_title_auto    ctrl_title_auto     ctrl_title_auto"
+  "sw_auto            sw_auto             sw_auto"
+  "ctrl_manual_title  ctrl_manual_title   ctrl_manual_title"
+  "sw_light           sw_fertilizer       sw_water"
 }
 
 .chart-main {
   grid-area: main;
+  margin-right: 10% !important;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-row: 0.5fr 1fr 0.5fr 1fr 0.5fr 1fr 0.5fr 1fr;
+  gap: 10px;
+  grid-template-areas:
+  "temp_title"
+  "temp_graph"
+  "ph_title"
+  "ph_graph"
+  "ec_title"
+  "ec_graph"
+  "hum_title"
+  "hum_graph"
 }
+
+.ctrl_auto_title {
+  grid-area: ctrl_title_auto;
+}
+
+.sw_auto {
+  grid-area: sw_auto;
+}
+
+.ctrl_manual_title {
+  grid-area: ctrl_manual_title;
+}
+
+.sw_light {
+  grid-area: sw_light;
+}
+
+.sw_fertilizer {
+  grid-area: sw_fertilizer;
+}
+
+.sw_water {
+  grid-area: sw_water;
+}
+
+
+
 
 /* .page-footer {
   grid-area: footer;
@@ -194,12 +241,6 @@ a.item.title {
   color: var(--txt-main);
   align-items: center;
 }
-
-.sw {
-  align-content: center;
-}
-
-
 
 a.button-start, a.button-harvest, a.button-cancel{
   display: inline-block;
@@ -302,7 +343,11 @@ form {
   height: 1fr;
   border-radius: 20px;
   background: var(--bg-white);
+}
 
+.plant-card.selected-card {
+  box-shadow: 3px 2px 16px 0px rgba(0, 0, 0, 0.1);
+  border: 0.05px solid var(--txt_light);
 }
 
 .plant-input {
@@ -333,17 +378,94 @@ form {
   cursor: not-allowed;
 }
 
-.button-popup .submit,.close {
+.button-popup,.submit,.close {
   margin: 5px;
   font-weight: bold;
   font-family: "Nunito", sans-serif !important;
-  box-shadow: inset 0 1px 1px rgba(0,0,0,0.1);
   color: var(--txt-main);
 }
 
 .button-popup .submit,.close:hover {
   cursor: pointer;
 }
+
+.plant-item-main {
+  width: 25%;
+  height: 25%;
+}
+
+#days_remaining {
+  color: var(--txt-main);
+  font-size: 2rem;
+  margin-top: 0px;
+  margin-bottom: 10px;
+}
+
+.plant-name-main {
+  font-size: 1rem;
+}
+
+.ctrl_img {
+  width: 30%;
+  height: 30%;
+  margin-top: 20px;
+  fill: red;
+  filter: grayscale(100%);
+}
+
+.ctrl-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 1fr;
+  height: 1fr;
+  border-radius: 20px;
+  background: #fff;
+}
+
+.ctrl-card .field h4 {
+  color: var(--txt_light);
+}
+
+.ctrl-card .ctrl-name {
+  color: var(--txt_light);
+}
+
+a.button6{
+  display: inline-block;
+  padding: 0.7em 1.4em;
+  margin:0 0.3em 0.3em 0;
+  border-radius:0.15em;
+  box-sizing: border-box;
+  text-decoration:none;
+  /* font-family:'Roboto',sans-serif; */
+  text-transform:uppercase;
+
+  font-weight:bolder;
+  color:#FFFFFF;
+  background-color: var(--blue);
+  box-shadow:inset 0 -0.6em 0 -0.35em rgba(0,0,0,0.17);
+  text-align:center;
+  position:relative;
+  }
+  a.button6:active{
+  top:0.1em;
+  }
+ 
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

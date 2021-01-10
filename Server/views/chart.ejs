@@ -59,7 +59,12 @@
 
     <div class="chart-main content">
         <h1>Genertal Stats</h1>
-        <div id="chart"></div>
+        <div id="temp_graph"></div>
+        <div id="hum_graph"></div>
+        <div id="ph_graph"></div>
+        <div id="ec_graph"></div>
+
+
 
     </div>
   </div>
@@ -68,86 +73,68 @@
 
 
 <script type="text/javascript">
-var options = {
-          series: [20],
-          chart: {
+
+function gen_graph(graph_name,data,html_id,color){
+  var graph_options = {
+        chart: {
           height: 350,
-          type: 'radialBar',
+          type: "line",
+          fontFamily: "Nunito, sans-serif",
+          animations: {
+            easing: "linear",
+            dynamicAnimation: {
+              speed: 2000,
+            },
+          },
           toolbar: {
-            show: true
-          }
+            show: false,
+          },
+          zoom: {
+            enabled: false,
+          },
         },
-        plotOptions: {
-          radialBar: {
-            startAngle: -135,
-            endAngle: 225,
-             hollow: {
-              margin: 0,
-              size: '70%',
-              background: '#fff',
-              image: undefined,
-              imageOffsetX: 0,
-              imageOffsetY: 0,
-              position: 'front',
-              dropShadow: {
-                enabled: true,
-                top: 3,
-                left: 0,
-                blur: 4,
-                opacity: 0.24
-              }
-            },
-            track: {
-              background: '#fff',
-              strokeWidth: '67%',
-              margin: 0, // margin is in pixels
-              dropShadow: {
-                enabled: true,
-                top: -3,
-                left: 0,
-                blur: 4,
-                opacity: 0.35
-              }
-            },
-        
-            dataLabels: {
-              show: true,
-              name: {
-                offsetY: -10,
-                show: true,
-                color: '#888',
-                fontSize: '17px'
-              },
-              value: {
-                formatter: function(val) {
-                  return parseInt(val);
-                },
-                color: '#111',
-                fontSize: '36px',
-                show: true,
-              }
-            }
-          }
-        },
-        fill: {
-          type: 'gradient',
-          gradient: {
-            shade: 'dark',
-            type: 'horizontal',
-            shadeIntensity: 0.5,
-            gradientToColors: ['#ABE5A1'],
-            inverseColors: true,
-            opacityFrom: 1,
-            opacityTo: 1,
-            stops: [0, 100]
-          }
+        colors: [color],
+        dataLabels: {
+          enabled: false,
         },
         stroke: {
-          lineCap: 'round'
+          curve: "smooth",
         },
-        labels: ['Percent'],
-        };
+        series: [
+          {
+            name: graph_name,
+            data: data,
+          }
+        ],
+        title: {
+          text: graph_name,
+          align: "left",
+        },
+        markers: {
+          size: 0,
+        },
+        xaxis: {
+          range: 10,
+          tickAmount: 10,
+        },
+        legend: {
+          show: true,
+        },
+      };
 
-        var chart = new ApexCharts(document.querySelector("#chart"), options);
-        chart.render();
+var graph_chart = new ApexCharts(
+document.querySelector(html_id),
+graph_options);
+graph_chart.render();
+
+}
+
+gen_graph("Temperature",[30, 32, 29, 31, 33, 34, 34, 33, 32, 30, 29, 29, 28, 29, 30],"#temp_graph","#ef476f");
+gen_graph("Humidity",[60, 66, 55, 59, 62, 60, 52, 70, 69, 65, 54, 58, 60, 63, 66],"#hum_graph","#ffd166");
+gen_graph("pH",[5.4, 5.6, 5.2, 5.7, 6, 6.3, 6, 6, 5.3, 5.1, 5.5, 5.8, 6, 6.3, 5.1],"#ph_graph","#06d6a0");
+gen_graph("EC",[1.0, 1.4, 1.4, 1.6, 1, 1.5, 1.6, 1.7, 1.5, 1.2, 1.6, 1.7, 1.9, 2.0, 2.1],"#ec_graph","#118ab2");
+
+
+
+
 </script>

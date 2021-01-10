@@ -8,10 +8,10 @@
 #include <HTTPClient.h>
 
 //WiFi Setup
-const char* ssid = "RP4";
-const char* password = "0852902000s";
-const char* serverName = "http://192.168.1.112:3000/";
-const char* serverName_light = "http://192.168.1.112:3000/sw-light";
+const char* ssid = "Chunmong_WiFi_2.4GHz";
+const char* password = "0817363932";
+const char* serverName = "http://192.168.1.111:3000/";
+const char* serverName_light = "http://192.168.1.111:3000/sw-light";
 
 // Define Pin
 #define DHTPIN 15
@@ -58,6 +58,11 @@ void loop() {
     if(millis() - time_1 > INTERVAL_DHT){
 
         time_1 = millis();
+
+        float ec;
+        ec = random(1,3) + (random(0,9)*0.1);
+        float ph;
+        ph = random(5,7) + (random(0,9)*0.1);
       
         float h = dht.readHumidity();
         float t = dht.readTemperature();
@@ -83,6 +88,16 @@ void loop() {
         payload_dht += ",";
         payload_dht += "\"hum\":"; 
         payload_dht += String(h);
+        payload_dht += ",";
+        payload_dht += "\"ec\":"; 
+        payload_dht += String(ec);
+        payload_dht += ",";
+        payload_dht += "\"ph\":"; 
+        payload_dht += String(ph);
+        payload_dht += ",";
+        payload_dht += "\"water\":"; 
+        payload_dht += String(100);
+        
         payload_dht += "}";
 
         post_json(payload_dht);

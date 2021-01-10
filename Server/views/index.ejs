@@ -60,7 +60,7 @@
       <div class="page-main content">
         <div class="env-title">
           <h1>Dashboard</h1>
-          <p id="ct"></p>
+          <P id="ct"></P>
         </div>
 
         <div class="env-card temp">
@@ -98,20 +98,27 @@
         </div>
 
         <div class="topic1">
-          <h2>Schedule</h2>
+          <h2>Harvest Schedule</h2>
         </div>
 
         <div class="env-card process">
-          <h4 class="env-name">Harvest time</h4>
+          <h4 class="env-name">Harvest Goal</h4>
           <div id="process_chart"></div>
         </div>
 
         <div class="env-card process-data">
           <div id="start-date-data">
             <div class="count-time">
-              <h2 id="m4" style="font-size: 3em;">120</h2>
-              <h3>Days</h3>
-              <p>Untill to Harvest</p>
+              <p style="font-weight: bold;">Harvested in</p>
+              <h2 id="days_remaining"></h2>
+              <img
+                      class="plant-item-main"
+                      src="/image/lettuce.svg"
+                      alt="lettuce"
+                    />
+              
+              <h2 class="plant-name-main">Green Oak Lettuce</h2>
+              
             </div>
           </div>
 
@@ -150,7 +157,6 @@
 
           <!-- POPUP FORM -->
 
-          <p id="me2">Kick me pls ?</p>
           <div id="popup-card">
             <div id="popup-data">
               <form
@@ -161,7 +167,7 @@
               >
                 <h2>Select your plant</h2>
                 <div class="main-card-plant">
-                  <div class="plant-card">
+                  <div class="plant-card selected-card">
                     <img
                       class="plant-item"
                       src="/image/lettuce.svg"
@@ -248,6 +254,30 @@
       // Socket.io
       var socket = io();
 
+      socket.on("dht_data",(data1,data2,data3,data4) =>{
+        var temp_data = parseInt(data1.temp_data);
+        var hum_data = parseInt(data2.hum_data);
+        var ec_data = parseInt(data3.ec_data);
+        var ph_data = parseInt(data4.ph_data);
+
+        graph_chart.appendData([
+          {
+            data: [temp_data],
+          },
+          {
+            data: [ph_data],
+          },
+          {
+            data: [ec_data],
+          },
+          {
+            data: [hum_data],
+          },
+        ]);
+
+
+      })
+
       socket.on("tempdata", (data) => {
         document.getElementById("env-temp").innerHTML = data.value;
       });
@@ -266,6 +296,10 @@
 
       socket.on("phdata", (data) => {
         document.getElementById("env-ph").innerHTML = data.value;
+      });
+
+      socket.on("water_lvl", (data) => {
+        document.getElementById("env-water").innerHTML = data.value;
       });
 
       //Set Clock | timezone
@@ -327,82 +361,23 @@
         return day_name[my_day.getDay()];
       }
 
-      // Chart Realtime
-      var graph_options = {
-        chart: {
-          height: 350,
-          type: "line",
-          fontFamily: "Nunito, sans-serif",
-          animations: {
-            easing: "linear",
-            dynamicAnimation: {
-              speed: 2000,
-            },
-          },
-          toolbar: {
-            show: false,
-          },
-          zoom: {
-            enabled: false,
-          },
-        },
-        dataLabels: {
-          enabled: false,
-        },
-        stroke: {
-          curve: "smooth",
-        },
-        series: [
-          {
-            name: "Tempurature",
-            data: [45, 52, 38, 24, 33, 26, 21, 20, 6, 8, 15, 10, 51, 32, 12],
-          },
-          {
-            name: "pH",
-            data: [35, 41, 62, 42, 13, 18, 29, 37, 36, 51, 32, 35, 20, 51, 36],
-          },
-        ],
-        title: {
-          text: " Sensors data",
-          align: "left",
-        },
-        markers: {
-          size: 0,
-        },
-        xaxis: {
-          range: 10,
-          tickAmount: 10,
-        },
-        legend: {
-          show: true,
-        },
-      };
+      // Calculate Percent time remaining plant for process charts.
+      function convert_days_remaining_to_percent(days_remaining){
+        duration = 45 // Duration of Saland 45 days
+        var result = Math.round((duration-days_remaining)*100/duration);
+        if(result>=100) return 100
+        else return result
+      }
 
-      var graph_chart = new ApexCharts(
-        document.querySelector("#graph_chart"),
-        graph_options
-      );
-      graph_chart.render();
-      window.setInterval(function () {
-        graph_chart.appendData([
-          {
-            data: [Math.floor(Math.random() * 20 + 20)],
-          },
-          {
-            data: [Math.floor(Math.random() * 20 + 20)],
-          },
-        ]);
-      }, 2000);
-
-      // Process Chart
-      var process_options = {
+      // Chart Process
+      function chart_process_circle(percent) {
+        var process_options = {
         chart: {
           height: 280,
           type: "radialBar",
           fontFamily: "Nunito, sans-serif",
         },
-
-        series: [75],
+        series: [percent],
 
         plotOptions: {
           radialBar: {
@@ -438,8 +413,85 @@
         document.querySelector("#process_chart"),
         process_options
       );
-
       process_chart.render();
+      } 
+
+      // Chart Realtime
+      var graph_options = {
+        chart: {
+          height: 350,
+          type: "line",
+          fontFamily: "Nunito, sans-serif",
+          animations: {
+            easing: "linear",
+            dynamicAnimation: {
+              speed: 1500,
+            },
+          },
+          toolbar: {
+            show: false,
+          },
+          zoom: {
+            enabled: false,
+          },
+        },
+        dataLabels: {
+          enabled: false,
+        },
+        stroke: {
+          curve: "smooth",
+        },
+        series: [
+          {
+            name: "Tempurature",
+            data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+          },
+          {
+            name: "pH",
+            data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+          },
+          {
+            name: "EC",
+            data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+          },
+          {
+            name: "Humidity",
+            data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+          },
+        ],
+        title: {
+          text: " Sensors data",
+          align: "left",
+        },
+        markers: {
+          size: 0,
+        },
+        xaxis: {
+          range: 10,
+          tickAmount: 10,
+        },
+        legend: {
+          show: true,
+        },
+      };
+
+      var graph_chart = new ApexCharts(
+        document.querySelector("#graph_chart"),
+        graph_options
+      );
+      graph_chart.render();
+      // window.setInterval(function () {
+      //   graph_chart.appendData([
+      //     {
+      //       data: [Math.floor()],
+      //     },
+      //     {
+      //       data: [Math.floor(Math.random() * 20 + 20)],
+      //     },
+      //   ]);
+      // }, 2000);
+      
+
 
 
       // POP-UP
@@ -450,8 +502,7 @@
         var plant_start_date = data2.start_date;
         var plant_day_remaining = data3.days_remaining;
 
-        document.getElementById("me2").innerHTML = "Status : " + plant_status;
-        document.getElementById("m4").innerHTML = String(plant_day_remaining);
+        document.getElementById("days_remaining").innerHTML = String(plant_day_remaining) + " Days";
 
         var start_btn = document.getElementById("btn-start");
         var cancel_btn = document.getElementById("btn-cancel");
@@ -463,6 +514,7 @@
           start_btn.style.display = "block";
           cancel_btn.style.display = "none";
           start_date_data.style.display = "none";
+          chart_process_circle(0);
 
           document.getElementById("button-start").addEventListener('click',() =>{
           var popup_main = document.getElementById("popup-card");
@@ -473,7 +525,10 @@
         start_btn.style.display = "none";
         cancel_btn.style.display = "block";
         start_date_data.style.display ="block";
-      };
+        chart_process_circle(convert_days_remaining_to_percent(plant_day_remaining));
+
+
+      };  // <-- End else if here
 
       document.getElementById("close-popup").addEventListener("click", () => {
         var popup_main = document.getElementById("popup-card");

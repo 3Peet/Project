@@ -63,7 +63,9 @@ function cal_unix_harvest_time(start_date) {
 function cal_days_remaining(unix_done) {
   var unix_now = Math.round(new Date().getTime() / 1000);
   var days_remaining = Math.round((unix_done - unix_now) / 86400);
-  return days_remaining;
+  if(days_remaining<=0) return 0;
+  else return days_remaining;
+  
 }
 
 app.set("view engine", "ejs");
@@ -155,6 +157,18 @@ app.post("/", (req, res) => {
   if (req.body.id == "dht") {
     io.sockets.emit("tempdata", { value: req.body.temp + "  °C" });
     io.sockets.emit("humdata", { value: req.body.hum + " %" });
+    io.sockets.emit("ecdata", { value: req.body.ec + " mS/cm" });
+    io.sockets.emit("phdata", { value: req.body.ph });
+    io.sockets.emit("water_lvl",{value: req.body.water + " %"});
+
+    io.sockets.emit(
+      "dht_data",
+      { temp_data: req.body.temp },
+      { hum_data: req.body.hum },
+      { ec_data: req.body.ec},
+      { ph_data: req.body.ph}
+      
+    );
   }
 
   if (req.body.id == "ldr") {

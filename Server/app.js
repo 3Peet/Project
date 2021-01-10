@@ -92,6 +92,10 @@ app.get("/market", (req, res) => {
   res.render("market");
 });
 
+app.get("/about", (req, res) => {
+  res.render("about");
+});
+
 app.post("/start_date_data", (req, res) => {
   if (req.body.start_date == "") {
     console.log("Schedule : No Data");
